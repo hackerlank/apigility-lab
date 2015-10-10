@@ -1,17 +1,15 @@
-define('zfegg/controller/role',
+define('zfegg/controller/resource',
     [
         'require',
         'zfegg/model/view',
         'zfegg/config',
         'zfegg/kendo/restful-data-source',
-        'zfegg/source/roles',
-        'zfegg/source/role-resources',
-        'zfegg/kendo/binder-window-center'
+        'zfegg/source/roles'
     ],
-    function (req, View, config, Restful, roles, RoleResourcesAssigner) {
+    function (req, View, config, Restful, roles) {
         'use strict';
 
-        var restUrl = config.baseUrl + '/roles';
+        var restUrl = config.baseUrl + '/resources';
 
         var kGrid;
         return new View(
@@ -28,37 +26,28 @@ define('zfegg/controller/role',
                         this.set('isAssignDisabled', false);
                     },
                     onClickAssign: function (e) {
+                        /*
+                         var view = new View(
+                         req.toUrl('./assign-resource.html'),
+                         {
+                         model: {
+                         roles: rolesAssigner.hierarchicalDataSource,
+                         isVisible: true,
+                         onCheckRole: function (e) {
+                         var role = e.sender.dataItem(e.node);
 
+                         rolesAssigner.assign(role);
+                         },
+                         onWindowClose: function (e) {
+                         e.sender.destroy();
+                         }
+                         }
+                         }
+                         );
+
+                         view.render();
+                         */
                         console.log('onClickAssign', this, e, this.selectedNode);
-
-                        var resourcesAssigner = new RoleResourcesAssigner(this.selectedNode);
-
-                        var view = new View(
-                            req.toUrl('./assign-resource.html'),
-                            {
-                                model: {
-                                    isVisible: true,
-                                    onCheckResource: function (e) {
-                                        var role = e.sender.dataItem(e.node);
-                                        resourcesAssigner.assign(role);
-                                    },
-                                    onWindowClose: function (e) {
-                                        e.sender.destroy();
-                                    }
-                                },
-                                init: function (e) {
-                                    var $tree = e.sender.element.find('[data-role=treeview]'),
-                                        kTree = $tree.data('kendoTreeView');
-
-                                    resourcesAssigner.fetchItems(function (items) {
-                                        kTree.setDataSource(items);
-                                    });
-                                }
-                            }
-                        );
-
-                        view.render();
-
                     }
                 },
                 init: function () {

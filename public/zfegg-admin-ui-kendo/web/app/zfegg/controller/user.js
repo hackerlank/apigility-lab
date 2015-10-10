@@ -11,7 +11,6 @@ define('zfegg/controller/user',
     'use strict';
 
     var restUrl = config.baseUrl + '/users';
-
     var kGrid;
     return new View(
         req.toUrl('./user.html'),
@@ -40,6 +39,11 @@ define('zfegg/controller/user',
                 onChange: function (e) {
                     kGrid = e.sender;
                     kGrid.wrapper.find('.k-grid-assign').removeAttr('disabled');
+                },
+                onEdit: function (e) {
+                    if (!e.model.isNew()) {
+                        var numeric = e.container.find("input[name=account]").attr("disabled", true);
+                    }
                 },
                 onDataBound: function (e) {
                     kGrid = e.sender;

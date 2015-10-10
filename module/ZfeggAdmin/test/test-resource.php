@@ -7,7 +7,7 @@ include __DIR__ . '/../../../vendor/autoload.php';
 
 $test = new Test;
 
-$test->testGetRoles();
+$test->testGetResources();
 
 class Test
 {
@@ -89,6 +89,27 @@ EOT
         echo Json::prettyPrint($response->getBody());
     }
 
+
+    public function testPutUsers()
+    {
+
+        $client = new \Zend\Http\Client('http://zfeggapi.local/users/1');
+        $client->setMethod('PUT');
+
+        $client->setHeaders([
+            'Accept' => 'application/hal+json',
+            'Content-Type' => 'application/json',
+        ]);
+        $client->setRawBody(<<<EOT
+{
+"email":"test2@test.com"
+}
+EOT
+        );
+        $response = $client->send();
+
+        echo Json::prettyPrint($response->getBody());
+    }
 
 
     public function testGetClients()

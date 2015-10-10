@@ -18,6 +18,11 @@ class Bcrypt extends AbstractFilter
      */
     public function filter($value)
     {
+
+        if ($value[0] == '$' && strlen($value) > 32) {
+            return $value;
+        }
+
         $this->createBcryptHash($value);
 
         return $value;

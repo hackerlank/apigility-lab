@@ -827,14 +827,14 @@ return array(
         'authorization' => array(
             'ZfeggAdmin\\V1\\Rest\\Resources\\Controller' => array(
                 'collection' => array(
-                    'GET' => true,
+                    'GET' => false,
                     'POST' => false,
                     'PUT' => false,
                     'PATCH' => false,
                     'DELETE' => false,
                 ),
                 'entity' => array(
-                    'GET' => true,
+                    'GET' => false,
                     'POST' => false,
                     'PUT' => false,
                     'PATCH' => false,
@@ -843,18 +843,18 @@ return array(
             ),
             'ZfeggAdmin\\V1\\Rest\\RoleResources\\Controller' => array(
                 'collection' => array(
-                    'GET' => true,
-                    'POST' => true,
+                    'GET' => false,
+                    'POST' => false,
                     'PUT' => false,
                     'PATCH' => false,
-                    'DELETE' => true,
+                    'DELETE' => false,
                 ),
                 'entity' => array(
-                    'GET' => true,
+                    'GET' => false,
                     'POST' => false,
                     'PUT' => true,
                     'PATCH' => false,
-                    'DELETE' => true,
+                    'DELETE' => false,
                 ),
             ),
             'ZfeggAdmin\\V1\\Rest\\UserRoles\\Controller' => array(
@@ -931,7 +931,7 @@ return array(
                     1 => array(
                         'text' => '角色管理',
                         'index' => 1,
-                        'url' => '/admin/role',
+                        'url' => '/zfegg/controller/role',
                     ),
                     2 => array(
                         'text' => '权限管理',

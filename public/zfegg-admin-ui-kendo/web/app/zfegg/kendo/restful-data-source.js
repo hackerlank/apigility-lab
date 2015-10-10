@@ -22,6 +22,7 @@ define('zfegg/kendo/restful-data-source', ['kendo'], function (kendo) {
 
     var DataSource = kendo.data.DataSource.extend({
         init: function (options) {
+            var self = this;
             var primary = (options.schema.model && options.schema.model.id) || 'id';
             var extendTransport1 = {read: {url: options.url}, create: {url: options.url}};
             var extendTransport2 = {
@@ -40,7 +41,7 @@ define('zfegg/kendo/restful-data-source', ['kendo'], function (kendo) {
                     url: function (e) {
                         return options.url + "/" + e[primary];
                     },
-                    type: "PUT",
+                    type: "PATCH",
                     dataType: "json",
                     contentType: MIME_JSON
                 },
@@ -53,7 +54,26 @@ define('zfegg/kendo/restful-data-source', ['kendo'], function (kendo) {
                     contentType: MIME_JSON
                 },
                 parameterMap: function (options, operation) {
-                    if (operation == 'create' || operation == 'update' || operation == 'destroy') {
+                    if (operation == 'update') {
+                        var pristine = self._pristineForModel(self.get(options[primary]));
+                        var patchData = $.extend({}, options); //clone data
+
+                        for (var i in patchData) {
+                            var item = patchData[i];
+                            if (typeof item == 'object' || typeof item == 'function') {
+                                continue;
+                            }
+
+                            if (item == pristine[i]) {
+                                delete patchData[i];
+                            }
+                        }
+
+                        delete patchData._links;
+
+                        return JSON.stringify(patchData);
+                    }
+                    if (operation == 'create' || operation == 'destroy') {
                         return JSON.stringify(options);
                     }
 
@@ -65,7 +85,6 @@ define('zfegg/kendo/restful-data-source', ['kendo'], function (kendo) {
             options.transport = $.extend(extendTransport1, options.transport || {});
             options.transport = $.extend(true, extendTransport2, options.transport);
 
-            console.log(options);
             kendo.data.DataSource.fn.init.call(this, options);
         },
         promise: function () {
