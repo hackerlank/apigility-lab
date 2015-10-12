@@ -78,16 +78,7 @@ class ResourcesResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        $result = [];
-        foreach ($this->getResources() as $resource => $config) {
-            $result[] = [
-                'resource' => $resource,
-                'description' => $config['description'],
-                'privileges' => array_values(array_unique(array_merge($config['entity_http_methods'], $config['collection_http_methods']))),
-            ];
-        }
-
-        return $result;
+        return array_values($this->getResources());
     }
 
     /**

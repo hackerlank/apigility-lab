@@ -1,6 +1,12 @@
 <?php
 namespace ZfeggAdmin\V1\Rest\RoleResources;
 
-class RoleResourcesEntity
+class RoleResourcesEntity extends \ArrayObject
 {
+    public function exchangeArray($input)
+    {
+        $input['methods'] = explode(',', $input['methods']);
+
+        return parent::exchangeArray($input);
+    }
 }

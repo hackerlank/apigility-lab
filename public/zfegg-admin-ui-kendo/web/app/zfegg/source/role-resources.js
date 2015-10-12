@@ -22,28 +22,13 @@ define('zfegg/source/role-resources',
                     }
                 },
                 schema: {
-                    parse: function (response) {
-                        if (response._embedded && response._embedded.role_resources) {
-                            var data = response._embedded.role_resources;
-
-                            $.map(data, function (o) {
-                                o.non_id = kendo.guid();
-                                return o;
-                            });
-
-                            data.non_id = kendo.guid();
-                            return data;
-                        }
-
-                        return response;
-                    },
                     model: {
-                        id: "non_id",
+                        id: "id",
                         fields: {
-                            non_id: {},
-                            role_id: {},
-                            name: {},
-                            parent_id: {}
+                            id: {type: "number"},
+                            resource: {editable: false},
+                            description: {},
+                            methods: {}
                         }
                     }
                 }
@@ -100,56 +85,130 @@ define('zfegg/source/role-resources',
             this.hierarchicalDataSource = hierarchicalDataSource;
         };
 
-        Assigner.prototype.assign = function (resourceItem) {
-            if (resourceItem.checked) {
-                this.dataSource.add({resource: resourceItem.resource});
-            } else {
-                var item = this.getByResource(resourceItem.resource);
-                this.dataSource.remove(item);
+        Assigner.prototype.assign = function (resourceSub) {
+            var self = this;
+
+            if (!resourceSub.method) {
+                $.each(resourceSub.items, function (i, item) {
+                    console.log(item);
+                    self.assign(item);
+                });
+                return;
             }
-            return this.dataSource.sync();
+
+            var resourceItem = resourceSub.parent().parent();
+            var actions = resourceItem.actions;
+
+            if (resourceSub.checked) {
+                $.each(actions, function (i, action) {
+                    var name = resourceItem.resource + '::' + action;
+                    var item = self.getByResource(name);
+
+                    if (!item) {
+                        item = self.dataSource.add({resource: name, methods: []});
+                    }
+
+                    item.methods.push(resourceSub.method);
+
+                    if (resourceSub.method == 'PUT') {
+                        item.methods.push('PATCH');
+                    } else if (resourceSub.method == 'PATCH') {
+                        item.methods.push('PUT');
+                    }
+
+                    item.set('methods', $.unique(item.methods));
+
+                    console.log(item.methods);
+                });
+            } else {
+                $.each(actions, function (i, action) {
+                    var name = resourceItem.resource + '::' + action;
+                    var item = self.getByResource(name);
+
+                    item.methods.splice(item.methods.indexOf(resourceSub.method), 1);
+
+                    if (resourceSub.method == 'PUT') {
+                        item.methods.splice(item.methods.indexOf('PATCH'), 1);
+                    } else if (resourceSub.method == 'PATCH') {
+                        item.methods.splice(item.methods.indexOf('PUT'), 1);
+                    }
+
+                    if (item.methods.length == 0) {
+                        self.dataSource.remove(item);
+                    } else {
+                        item.set('methods', item.methods);
+                    }
+
+                    console.log(item.methods);
+                });
+            }
+            console.log(this);
         };
 
         Assigner.prototype.getByResource = function (resource) {
             return this.dataSource.data().find(function (m) {return m.resource == resource;});
         };
 
+        var httpOptions = {
+            'POST'   : '增',
+            'DELETE' : '删',
+            'PUT'    : '改',
+            'PATCH'  : '改',
+            'GET'    : '查'
+        };
+
         Assigner.prototype.fetchItems = function (callback) {
-
-            var httpOptions = {
-                'POST'   : '增',
-                'DELETE' : '删',
-                'PUT'    : '改',
-                'PATCH'  : '改',
-                'GET'    : '查'
-            };
-
             var self = this;
+
             self.dataSource.promise().then(function () {
+                var assignedData = {};
+                $.each(self.dataSource.data().toJSON(), function (i, item) {
+                    $.each(item.methods, function (j, method) {
+                        assignedData[item.resource + '::' + method] = true;
+                    });
+                });
+
+                var isChecked = function (resourceItem, resourceMethod) {
+                    var self = this;
+
+                    for (var i = 0; i < resourceItem.actions.length; i++) {
+                        if (assignedData[resourceItem.resource+'::'+resourceItem.actions[i]+'::'+resourceMethod]) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
 
                 resources.promise().then(function () {
                     var data = resources.data().toJSON();
+                    var assignedData = {};
 
                     $.map(data, function(x) {
-                        var privileges = [];
-                        $.each(x.privileges, function (i, privilege) {
-                            privileges.push(httpOptions[privilege]);
+
+                        var items = {};
+                        x.items = [];
+                        $.each(x.methods, function (i, method) {
+                            var item = {
+                                description: httpOptions[method],
+                                method: method,
+                                checked: isChecked(x, method)
+                            };
+
+                            if (!items[httpOptions[method]]) {
+                                items[httpOptions[method]] = item;
+                                x.items.push(item);
+
+                                x.checked = x.checked || item.checked;
+                            }
                         });
-                        privileges = $.unique(privileges);
 
-
-
-
-                        if (self.getByResource(x.resource)) {
-                            x.checked = true;
-                        }
                         return x;
                     });
+
+                    console.log(data);
+                    callback(data);
                 });
             });
-
-            callback(items);
-            return this.dataSource.data().find(function (m) {return m.role_id == resource;});
         };
 
         return Assigner;

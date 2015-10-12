@@ -15,26 +15,66 @@ class ResourcesResourceFactory
 
     protected function getConfigs(ServiceManager $services)
     {
-        $configs = $services->get('config')['zf-rest'];
+        $authConfigs = $services->get('config')['zf-mvc-auth']['authorization'];
+        $restConfigs = $services->get('config')['zf-rest'];
+        $rpcConfigs  = $services->get('config')['zf-rpc'];
+        $docConfigs  = $services->get('config')['zfegg-admin']['resources-documentation'];
+        $resources   = [];
 
-        $docConfigs = $services->get('config')['zfegg-admin']['resources-documentation'];
+        unset($authConfigs['deny_by_default']);
 
-        foreach ($configs as $ctrl => $config) {
-            //忽略apigility
-            if (strpos($ctrl, 'ZF\Apigility') === 0) {
-                unset($configs[$ctrl]);
-                continue;
+//        var_dump($authConfigs, $restConfigs, $rpcConfigs);exit;
+        foreach ($authConfigs as $ctrl => $authConfig) {
+            if (isset($authConfig['actions'])) {
+                $methods = [];
+                foreach ($authConfig['actions'] as $action => $authMethods) {
+                    foreach ($authMethods as $method => $val) {
+                        if ($val) {
+                            $methods[] = $method;
+                        }
+                    }
+                }
+
+                $resources[$ctrl] = [
+                    'type'    => 'rpc',
+                    'actions' => array_keys($authConfig['actions']),
+                    'methods' => $methods
+                ];
+
+            } else {
+                $methods = [];
+                foreach (['collection', 'entity'] as $action) {
+                    foreach ($authConfig[$action] as $method => $val) {
+                        if ($val) {
+                            $methods[] = $method;
+                        }
+                    }
+                }
+
+                if (empty($methods)) {
+                    continue;
+                }
+
+                $resources[$ctrl] = [
+                    'type'    => 'rest',
+                    'actions' => ['collection', 'entity'],
+                    'methods' => $methods
+                ];
             }
 
+            $resources[$ctrl]['resource'] = $ctrl;
+
             if (isset($docConfigs[$ctrl])) {
-                $configs[$ctrl] = array_merge($configs[$ctrl], $docConfigs[$ctrl]);
-            } else if (isset($config['service_name'])) {
-                $configs[$ctrl]['description'] = $config['service_name'];
+                $resources[$ctrl]['description'] = $docConfigs[$ctrl]['description'];
+            } else if (isset($restConfigs[$ctrl]['service_name'])) {
+                $resources[$ctrl]['description'] = $restConfigs[$ctrl]['service_name'];
+            } else if (isset($rpcConfigs[$ctrl]['service_name'])) {
+                $resources[$ctrl]['description'] = $rpcConfigs[$ctrl]['service_name'];
             } else {
-                print_r($configs);exit;
+                $resources[$ctrl]['description'] = '';
             }
         }
 
-        return $configs;
+        return $resources;
     }
 }

@@ -14,9 +14,11 @@ define('zfegg/source/resources',
                 model: {
                     id: "resource",
                     fields: {
-                        resource: {type: "string", editable: false},
+                        resource: {editable: false},
+                        type: {editable: false},
                         description: {},
-                        privileges: {}
+                        methods: {},
+                        actions: {}
                     }
                 }
             }

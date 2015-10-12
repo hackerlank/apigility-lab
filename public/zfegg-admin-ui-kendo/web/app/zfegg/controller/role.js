@@ -6,9 +6,10 @@ define('zfegg/controller/role',
         'zfegg/kendo/restful-data-source',
         'zfegg/source/roles',
         'zfegg/source/role-resources',
+        'zfegg/source/resources',
         'zfegg/kendo/binder-window-center'
     ],
-    function (req, View, config, Restful, roles, RoleResourcesAssigner) {
+    function (req, View, config, Restful, roles, RoleResourcesAssigner, resources) {
         'use strict';
 
         var restUrl = config.baseUrl + '/roles';
@@ -28,37 +29,38 @@ define('zfegg/controller/role',
                         this.set('isAssignDisabled', false);
                     },
                     onClickAssign: function (e) {
-
-                        console.log('onClickAssign', this, e, this.selectedNode);
-
                         var resourcesAssigner = new RoleResourcesAssigner(this.selectedNode);
 
-                        var view = new View(
-                            req.toUrl('./assign-resource.html'),
-                            {
-                                model: {
-                                    isVisible: true,
-                                    onCheckResource: function (e) {
-                                        var role = e.sender.dataItem(e.node);
-                                        resourcesAssigner.assign(role);
-                                    },
-                                    onWindowClose: function (e) {
-                                        e.sender.destroy();
+                        resourcesAssigner.fetchItems(function (items) {
+                            var view = new View(
+                                req.toUrl('./assign-resource.html'),
+                                {
+                                    model: {
+                                        isVisible: true,
+                                        onCheckResource: function (e) {
+                                            var resource = e.sender.dataItem(e.node);
+                                            resourcesAssigner.assign(resource);
+                                        },
+                                        onWindowClose: function (e) {
+                                            e.sender.destroy();
+                                        },
+                                        onButtonSubmit: function (e) {
+                                            e.preventDefault();
+                                            resourcesAssigner.dataSource.sync().then(function () {
+                                                $(e.target).closest('[data-role=window]').data('kendoWindow').close();
+                                            });
+                                        },
+                                        onButtonCancel: function (e) {
+                                            e.preventDefault();
+                                            $(e.target).closest('[data-role=window]').data('kendoWindow').close();
+                                        },
+                                        resources: items
                                     }
-                                },
-                                init: function (e) {
-                                    var $tree = e.sender.element.find('[data-role=treeview]'),
-                                        kTree = $tree.data('kendoTreeView');
-
-                                    resourcesAssigner.fetchItems(function (items) {
-                                        kTree.setDataSource(items);
-                                    });
                                 }
-                            }
-                        );
+                            );
 
-                        view.render();
-
+                            view.render();
+                        });
                     }
                 },
                 init: function () {
@@ -76,8 +78,6 @@ define('zfegg/controller/role',
                             var n = roles.dataSource.get(kTree.dataItem(this).role_id);
                             if (n) {
                                 roles.dataSource.remove(n);
-                            } else {
-                                console.log(item, n);
                             }
                         });
                         roles.dataSource.sync().then(function () {

@@ -29,7 +29,7 @@ class RoleResourcesResource extends AbstractResourceListener
         $insertData = array(
             'role_id'=> $this->getRoleId(),
             'resource' => $data['resource'],
-            'privileges'=> implode(',', $data['privileges']),
+            'methods'=> implode(',', $data['methods']),
         );
         $this->table->insert($insertData);
 
@@ -78,6 +78,7 @@ class RoleResourcesResource extends AbstractResourceListener
     public function fetchAll($params = array())
     {
         return $this->table->select(['role_id' => $this->getRoleId()]);
+
     }
 
     /**
@@ -89,7 +90,7 @@ class RoleResourcesResource extends AbstractResourceListener
      */
     public function patch($id, $data)
     {
-        return new ApiProblem(405, 'The PATCH method has not been defined for individual resources');
+        return $this->update($id, $data);
     }
 
     /**
@@ -114,10 +115,10 @@ class RoleResourcesResource extends AbstractResourceListener
     {
         $data = $this->retrieveData($data);
         $updateData = array(
-            'privileges'=> implode(',', $data['privileges']),
+            'methods'=> implode(',', $data['methods']),
         );
 
-        $this->table->update($updateData, ['role_id' => $this->getRoleId(), 'resource' => $id]);
+        $this->table->update($updateData, ['id' => $id]);
 
         return $data;
     }

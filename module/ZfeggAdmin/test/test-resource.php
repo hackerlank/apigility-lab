@@ -7,7 +7,7 @@ include __DIR__ . '/../../../vendor/autoload.php';
 
 $test = new Test;
 
-$test->testGetResources();
+$test->testGetRoleResources();
 
 class Test
 {

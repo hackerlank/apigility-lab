@@ -121,6 +121,7 @@ return array(
                 0 => 'GET',
                 1 => 'DELETE',
                 2 => 'PUT',
+                3 => 'PATCH',
             ),
             'collection_http_methods' => array(
                 0 => 'GET',
@@ -645,7 +646,7 @@ return array(
                 'required' => true,
                 'validators' => array(),
                 'filters' => array(),
-                'name' => 'privileges',
+                'name' => 'methods',
             ),
         ),
         'ZfeggAdmin\\V1\\Rest\\RoleResources\\Validator' => array(
@@ -677,7 +678,7 @@ return array(
                         'name' => 'StringToUpper',
                     ),
                 ),
-                'name' => 'privileges',
+                'name' => 'methods',
                 'description' => '权限',
             ),
         ),
