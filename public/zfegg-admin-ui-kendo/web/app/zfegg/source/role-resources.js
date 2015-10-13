@@ -14,13 +14,6 @@ define('zfegg/source/role-resources',
             var url = config.baseUrl + '/roles/' + role.role_id + '/resources';
             var assignerSource = new Restful({
                 url:  url,
-                transport: {
-                    destroy: {
-                        url: function (e) {
-                            return url + "/" + e['resource'];
-                        }
-                    }
-                },
                 schema: {
                     model: {
                         id: "id",
@@ -89,8 +82,11 @@ define('zfegg/source/role-resources',
             var self = this;
 
             if (!resourceSub.method) {
+                if (!resourceSub.items.length) {
+                    resourceSub.load();
+                }
+
                 $.each(resourceSub.items, function (i, item) {
-                    console.log(item);
                     self.assign(item);
                 });
                 return;

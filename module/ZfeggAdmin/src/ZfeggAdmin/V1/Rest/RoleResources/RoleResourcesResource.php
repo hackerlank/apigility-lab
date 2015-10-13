@@ -44,7 +44,9 @@ class RoleResourcesResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-        return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
+        $this->table->delete(['id' => $id]);
+
+        return true;
     }
 
     /**
