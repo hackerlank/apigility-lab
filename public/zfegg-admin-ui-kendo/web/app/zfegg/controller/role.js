@@ -3,13 +3,11 @@ define('zfegg/controller/role',
         'require',
         'zfegg/model/view',
         'zfegg/config',
-        'zfegg/kendo/restful-data-source',
         'zfegg/source/roles',
         'zfegg/source/role-resources',
-        'zfegg/source/resources',
         'zfegg/kendo/binder-window-center'
     ],
-    function (req, View, config, Restful, roles, RoleResourcesAssigner, resources) {
+    function (req, View, config, roles, RoleResourcesAssigner) {
         'use strict';
 
         var restUrl = config.baseUrl + '/roles';

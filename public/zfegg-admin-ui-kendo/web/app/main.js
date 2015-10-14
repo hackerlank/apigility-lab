@@ -23,29 +23,8 @@ define(function() {
     require([
         'jquery',
         'kendo',
-        'zfegg/config',
-        'zfegg/model/view',
-        //'zfegg/source/roles',
-        //'zfegg/source/user-roles',
-        'require'
-    ], function($, kendo, config, View, roles, userRoles) {
-
-        //roles.dataSource.promise();
-        //var s = (new userRoles({user_id:1}));
-        //$('#treeview').kendoTreeView({
-        //    dataSource: s.hierarchicalDataSource,
-        //    dataTextField: 'name'
-        //});
-        ////roles.hierarchicalDataSource.fetch(function () {
-        ////    console.log(this.data());
-        ////});
-        //
-        //s.promise().then(function () {
-        //    console.log('roles loaded');
-        //});
-        //console.log(s);
-        //
-        //return ;
+        'zfegg/config'
+    ], function($, kendo, config) {
 
         var $panel = $("#left-panel"), $tabs = $("#main-tabs");
         var viewModel = kendo.observable({
@@ -84,7 +63,7 @@ define(function() {
 
             },
             onSelectTabstrip: function(e) {
-                console.log('onSelectTabstrip');
+                //console.log('onSelectTabstrip');
             }
         });
         kendo.bind(document.body, viewModel);
@@ -102,40 +81,19 @@ define(function() {
         menus.fetch(function () {
             $("#left-panel").data('kendoPanelBar').append(menus.data().toJSON());
         });
-        //
-        //tabs.init();
-        //
-        //menus.fetch(function () {
-        //    var panel = $("#left-panel").kendoPanelBar({
-        //        dataSource: menus.data().toJSON(),
-        //        select: function (e) {
-        //            e.preventDefault();
-        //
-        //            var $item = $(e.item);
-        //            if (!$item.has('ul').size()) {
-        //                var $a = $item.find('a');
-        //                if (/^##\w/i.test($a.attr('href'))) {
-        //                    var href = $a.attr('href').substr(2);
-        //
-        //                    if ($item.data('zfegg.tab')) {
-        //                        tabs.$el.activateTab($item.data('zfegg.tab'));
-        //                    } else {
-        //                        require([href], function (view) {
-        //                            if (typeof(view.render) == 'function') {
-        //                                view.render();
-        //                            }
-        //
-        //                            $item.data('zfegg.tab');
-        //                        });
-        //                    }
-        //
-        //
-        //                }
-        //            }
-        //        }
-        //    });
-        //    var kPanel = panel.data('kendoPanelBar');
-        //});
 
+        $.ajaxSetup({
+            error: function (xhr) {
+                if (xhr.responseJSON) {
+                    require(['zfegg/ui/notification'], function (notification) {
+                        notification.error('<span>错误('+ xhr.status +'): '+xhr.statusText + '</span><br />'+xhr.responseJSON.detail);
+                    });
+                }
+            }
+        });
     });
+});
+define('zfegg/ui/notification', ['jquery', 'kendo'], function($) {
+    'use strict';
+    return $('#notification').data('kendoNotification');
 });

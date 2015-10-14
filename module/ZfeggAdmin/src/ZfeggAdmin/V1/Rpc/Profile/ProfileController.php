@@ -8,6 +8,11 @@ class ProfileController extends AbstractActionController
 {
     public function indexAction()
     {
+        return new JsonModel([
+            'email' => 'xxx@xxx.com',
+            'real_name' => 'xxxx',
+            'account' => 'XXXX',
+        ]);
         return new JsonModel($this->identity());
     }
 

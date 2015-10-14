@@ -286,6 +286,7 @@ return array(
                 0 => 'application/vnd.zfegg-admin.v1+json',
                 1 => 'application/json',
                 2 => 'application/*+json',
+                3 => 'application/x-www-form-urlencoded',
             ),
             'ZfeggAdmin\\V1\\Rest\\AdminUser\\Controller' => array(
                 0 => 'application/vnd.zfegg-admin.v1+json',
@@ -322,6 +323,7 @@ return array(
             'ZfeggAdmin\\V1\\Rpc\\Profile\\Controller' => array(
                 0 => 'application/vnd.zfegg-admin.v1+json',
                 1 => 'application/json',
+                2 => 'application/x-www-form-urlencoded',
             ),
             'ZfeggAdmin\\V1\\Rest\\AdminUser\\Controller' => array(
                 0 => 'application/vnd.zfegg-admin.v1+json',
@@ -935,14 +937,14 @@ return array(
                         'url' => '/zfegg/controller/role',
                     ),
                     2 => array(
-                        'text' => '权限管理',
+                        'text' => '权限列表',
                         'index' => 2,
-                        'url' => '/admin/permission',
+                        'url' => '/zfegg/controller/resource',
                     ),
                     3 => array(
                         'text' => '个人信息',
                         'index' => 4,
-                        'url' => './ui/admin/index/self',
+                        'url' => '/zfegg/controller/profile',
                     ),
                 ),
             ),
@@ -977,44 +979,6 @@ return array(
                     5 => array(
                         'text' => '数据源权限',
                         'url' => './model-manager/source/view/id/2',
-                    ),
-                ),
-            ),
-            2 => array(
-                'text' => '武极天下',
-                'expanded' => true,
-                'items' => array(
-                    0 => array(
-                        'text' => '角色查询',
-                        'index' => 0,
-                        'url' => '/gm/character',
-                    ),
-                    1 => array(
-                        'text' => '充值查询',
-                        'index' => 0,
-                        'url' => '/gm/character/charge-record',
-                    ),
-                    2 => array(
-                        'text' => '用户增减查询',
-                        'index' => 1,
-                        'url' => '/gm/character/reduce-and-increment',
-                    ),
-                    3 => array(
-                        'text' => '道具操作记录查询',
-                        'index' => 1,
-                        'url' => '/gm/character/item-operation-record',
-                    ),
-                    4 => array(
-                        'text' => '后台充值',
-                        'url' => '/gm',
-                    ),
-                    5 => array(
-                        'text' => '礼包码制作工具',
-                        'url' => '/gm',
-                    ),
-                    6 => array(
-                        'text' => '信息发布工具',
-                        'url' => './gm',
                     ),
                 ),
             ),
