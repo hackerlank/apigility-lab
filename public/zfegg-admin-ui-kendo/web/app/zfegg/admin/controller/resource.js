@@ -1,14 +1,15 @@
-define('zfegg/controller/resource',
+define('zfegg/admin/controller/resource',
     [
         'require',
-        'zfegg/model/view',
+        'zfegg/view/view',
         'zfegg/config',
-        'zfegg/source/resources'
+        '../source/resources'
     ],
     function (req, View, config, resources) {
         'use strict';
 
         return new View(
+            '资源管理',
             req.toUrl('./resource.html'),
             {
                 model: {

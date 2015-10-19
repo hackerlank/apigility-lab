@@ -1,4 +1,4 @@
-define('zfegg/source/roles',
+define('zfegg/admin/source/roles',
     [
         'jquery',
         'kendo',

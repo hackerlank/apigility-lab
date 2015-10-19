@@ -1,10 +1,10 @@
-define('zfegg/controller/user',
+define('zfegg/admin/controller/user',
     [
         'require',
-        'zfegg/model/view',
+        'zfegg/view/view',
         'zfegg/config',
         'zfegg/kendo/restful-data-source',
-        'zfegg/source/user-roles',
+        '../source/user-roles',
         'zfegg/kendo/binder-window-center'
     ],
     function(req, View, config, Restful, UserRolesAssigner) {
@@ -13,6 +13,7 @@ define('zfegg/controller/user',
     var restUrl = config.baseUrl + '/users';
     var kGrid;
     return new View(
+        '用户管理',
         req.toUrl('./user.html'),
         {
             model: {
@@ -57,7 +58,7 @@ define('zfegg/controller/user',
                         var user = kGrid.dataItem(kGrid.select());
                         var rolesAssigner = new UserRolesAssigner(user);
                         var view = new View(
-                            req.toUrl('./assign-role.html'),
+                            '', req.toUrl('./assign-role.html'),
                             {
                                 model: {
                                     roles: rolesAssigner.hierarchicalDataSource,

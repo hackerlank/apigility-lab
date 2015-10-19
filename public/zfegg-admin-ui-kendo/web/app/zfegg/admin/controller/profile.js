@@ -1,8 +1,8 @@
-define('zfegg/controller/profile',
+define('zfegg/admin/controller/profile',
     [
         'require',
         'kendo',
-        'zfegg/model/view',
+        'zfegg/view/view',
         'zfegg/config',
         'zfegg/ui/notification'
     ],
@@ -29,6 +29,7 @@ define('zfegg/controller/profile',
             }
         };
         return new View(
+            '个人信息',
             req.toUrl('./profile.html'),
             {
                 model: {

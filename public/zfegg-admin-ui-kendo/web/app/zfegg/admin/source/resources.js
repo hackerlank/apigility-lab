@@ -1,4 +1,4 @@
-define('zfegg/source/resources',
+define('zfegg/admin/source/resources',
     [
         'kendo',
         'zfegg/config',

@@ -1,10 +1,10 @@
-define('zfegg/source/role-resources',
+define('zfegg/admin/source/role-resources',
     [
         'jquery',
         'kendo',
         'zfegg/config',
         'zfegg/kendo/restful-data-source',
-        'zfegg/source/resources'
+        './resources'
     ],
     function($, kendo, config, Restful, resources) {
         'use strict';

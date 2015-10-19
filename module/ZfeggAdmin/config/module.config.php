@@ -929,22 +929,22 @@ return array(
                     0 => array(
                         'text' => '用户管理',
                         'index' => 0,
-                        'url' => '/zfegg/controller/user',
+                        'url' => '#/zfegg/admin/user',
                     ),
                     1 => array(
                         'text' => '角色管理',
                         'index' => 1,
-                        'url' => '/zfegg/controller/role',
+                        'url' => '#/zfegg/admin/role',
                     ),
                     2 => array(
                         'text' => '权限列表',
                         'index' => 2,
-                        'url' => '/zfegg/controller/resource',
+                        'url' => '#/zfegg/admin/resource',
                     ),
                     3 => array(
                         'text' => '个人信息',
                         'index' => 4,
-                        'url' => '/zfegg/controller/profile',
+                        'url' => '#/zfegg/admin/profile',
                     ),
                 ),
             ),

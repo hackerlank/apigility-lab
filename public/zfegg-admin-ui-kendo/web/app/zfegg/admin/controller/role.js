@@ -1,10 +1,10 @@
-define('zfegg/controller/role',
+define('zfegg/admin/controller/role',
     [
         'require',
-        'zfegg/model/view',
+        'zfegg/view/view',
         'zfegg/config',
-        'zfegg/source/roles',
-        'zfegg/source/role-resources',
+        '../source/roles',
+        '../source/role-resources',
         'zfegg/kendo/binder-window-center'
     ],
     function (req, View, config, roles, RoleResourcesAssigner) {
@@ -14,6 +14,7 @@ define('zfegg/controller/role',
 
         var kGrid;
         return new View(
+            '角色管理',
             req.toUrl('./role.html'),
             {
                 model: {
@@ -31,7 +32,7 @@ define('zfegg/controller/role',
 
                         resourcesAssigner.fetchItems(function (items) {
                             var view = new View(
-                                req.toUrl('./assign-resource.html'),
+                                '', req.toUrl('./assign-resource.html'),
                                 {
                                     model: {
                                         isVisible: true,
