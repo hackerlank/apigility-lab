@@ -16,6 +16,7 @@ data/cache/*
 !data/cache/.gitkeep
 .vagrant
 .svn
-/public/zfegg-admin-ui-kendo/bower_components
+/public/zfegg-admin-ui-kendo
 /public/images/captcha
 puphpet
+/public/img
