@@ -7,13 +7,24 @@ include __DIR__ . '/../../../vendor/autoload.php';
 
 $test = new Test;
 
-$test->testGetRoleResources();
+$test->testPostOauthPassword();
 
 class Test
 {
 
+
     public function testPostOauthPassword()
     {
+        /**
+         * {
+        "access_token": "5311195fbffa91a764c4443810e51644e58654bd",
+        "expires_in": 3600,
+        "token_type": "Bearer",
+        "scope": null,
+        "refresh_token": "b8c3f31aa5350b99128e05c0d2f1d3d35e02a817"
+        }
+         *
+         */
         $response = ClientStatic::post('http://zfeggapi.local/oauth', [null],
             [
                 'Accept' => 'application/json',
@@ -59,6 +70,7 @@ EOT
         $response = ClientStatic::get('http://zfeggapi.local/users', [],
             [
                 'Accept' => 'application/hal+json',
+                'Authorization' => 'Bearer 5311195fbffa91a764c4443810e51644e58654bd',
             ]
         );
 

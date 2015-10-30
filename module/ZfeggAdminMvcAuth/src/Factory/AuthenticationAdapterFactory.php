@@ -1,11 +1,12 @@
 <?php
 
-namespace ZfeggAuth\Factory;
+namespace Zfegg\Admin\MvcAuth\Factory;
 
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfeggAuth\Authentication\DbAuthenticationAdapter;
+use Zfegg\Admin\MvcAuth\Authentication\DbAuthenticationAdapter;
+use Zfegg\Admin\MvcAuth\Authentication\SessionAuthenticationAdapter;
 
 class AuthenticationAdapterFactory implements FactoryInterface
 {
@@ -20,6 +21,7 @@ class AuthenticationAdapterFactory implements FactoryInterface
     {
         $config = $serviceLocator->get('config')['zfegg-auth']['authentication'];
 
+        return new SessionAuthenticationAdapter();
         return new DbAuthenticationAdapter(
             $serviceLocator->get($config['adapter']),
             $config['table'],

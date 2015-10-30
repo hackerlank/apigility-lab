@@ -1,0 +1,6 @@
+{
+    "name": "zfegg/zfegg-admin-resource",
+    "require": {
+        "zfcampus/zf-apigility": "~1.2.1"
+    }
+}

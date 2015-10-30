@@ -1,8 +1,7 @@
 <?php
-namespace ZfeggAuth;
+namespace Zfegg\Admin\MvcAuth;
 
 use Zend\Mvc\MvcEvent;
-use ZF\MvcAuth\MvcAuthEvent;
 
 class Module
 {
@@ -12,12 +11,21 @@ class Module
         $events   = $app->getEventManager();
         $services = $app->getServiceManager();
 
-        $events->attach($services->get('ZfeggAuth\AuthListener'));
+//        $events->attach($services->get('Zfegg\Admin\MvcAuth\AuthListener'));
+
+        $events->attach(
+            'authentication',
+            function ($e) use ($services) {
+                $listener = $services->get('ZF\MvcAuth\Authentication\DefaultAuthenticationListener');
+                $listener->attach($services->get('Zfegg\Admin\MvcAuth\AuthenticationAdapter'));
+            },
+            1000
+        );
     }
 
     public function getConfig()
     {
-        return include __DIR__ . '/../../config/module.config.php';
+        return include __DIR__ . '/../config/module.config.php';
     }
 
     public function getAutoloaderConfig()

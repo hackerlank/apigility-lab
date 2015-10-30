@@ -22,5 +22,6 @@ return array(
     'ZF\\Rpc',
     'ZF\\Versioning',
     'ZfeggAdmin',
-//    'ZfeggAuth',
+    'Zfegg\\Admin\\UiKendo',
+    'Zfegg\Admin\MvcAuth',
 );

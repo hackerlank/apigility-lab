@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfeggAuth\Factory;
+namespace Zfegg\Admin\MvcAuth\Factory;
 
 use Zend\Http\Request;
 use Zend\Permissions\Acl\Acl;
@@ -32,7 +32,7 @@ class AclAuthorizationFactory extends \ZF\MvcAuth\Factory\AclAuthorizationFactor
         $this->initResources($serviceLocator);
 
         /** @var \ZfeggAdmin\V1\Rest\RoleResources\RoleResourcesResource $roleResources */
-        $roleResources = $serviceLocator->get('ZfeggAuth\RoleResourcesResource');
+        $roleResources = $serviceLocator->get('Zfegg\Admin\MvcAuth\RoleResourcesResource');
         $resources = $roleResources->fetchAllFull();
 
         foreach ($resources as $resource) {

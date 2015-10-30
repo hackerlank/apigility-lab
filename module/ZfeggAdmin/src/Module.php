@@ -26,8 +26,8 @@ class Module implements ApigilityProviderInterface
     
     public function getConfig()
     {
-        $configs = include __DIR__ . '/../../config/module.config.php';
-        $configs['zfegg-admin']['resources-documentation'] = include __DIR__ . '/../../config/documentation.config.php';
+        $configs = include __DIR__ . '/../config/module.config.php';
+        $configs['zfegg-admin']['resources-documentation'] = include __DIR__ . '/../config/documentation.config.php';
 
         return $configs;
     }

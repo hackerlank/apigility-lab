@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfeggAuth;
+namespace Zfegg\Admin\MvcAuth;
 
 
 use Zend\EventManager\AbstractListenerAggregate;
@@ -53,7 +53,7 @@ class AuthListener extends AbstractListenerAggregate implements ServiceLocatorAw
         $request       = $e->getRequest();
         $resourceBuild = $sl->get('ZF\MvcAuth\Authorization\DefaultResourceResolverListener');
         $resource      = $resourceBuild->buildResourceString($e->getRouteMatch(), $request);
-        $acl           = $sl->get('ZfeggAuth\Acl');
+        $acl           = $sl->get('Zfegg\Admin\MvcAuth\Acl');
         $auth          = $sl->get('authentication');
         $configs       = $sl->get('config');
 
@@ -70,7 +70,7 @@ class AuthListener extends AbstractListenerAggregate implements ServiceLocatorAw
         $userIdKey = isset($configs['zfegg-auth']['user_id']) ? $configs['zfegg-auth']['user_id'] : 'user_id';
 
         /** @var \ZfeggAdmin\V1\Rest\UserRoles\UserRolesResource $userRoles */
-        $userRoles = $sl->get('ZfeggAuth\UserRolesResource');
+        $userRoles = $sl->get('Zfegg\Admin\MvcAuth\UserRolesResource');
         $roles     = $userRoles->setUserId($identity[$userIdKey])->fetchAll();
         $reason    = sprintf('Resource "%s", user "%s" is not allowed.', $resource, $identity[$userIdKey]);
 

@@ -11,6 +11,7 @@ return array(
             9 => 'zfegg-admin.rpc.profile',
             0 => 'zfegg-admin.rest.admin-user',
             10 => 'zfegg-admin.rest.admin-role',
+            11 => 'zfegg-admin.rpc.app',
         ),
     ),
     'router' => array(
@@ -88,6 +89,16 @@ return array(
                     'route' => '/roles[/:role_id]',
                     'defaults' => array(
                         'controller' => 'ZfeggAdmin\\V1\\Rest\\AdminRole\\Controller',
+                    ),
+                ),
+            ),
+            'zfegg-admin.rpc.app' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/',
+                    'defaults' => array(
+                        'controller' => 'ZfeggAdmin\\V1\\Rpc\\App\\Controller',
+                        'action' => 'app',
                     ),
                 ),
             ),
@@ -255,6 +266,7 @@ return array(
             'ZfeggAdmin\\V1\\Rpc\\Profile\\Controller' => 'Json',
             'ZfeggAdmin\\V1\\Rest\\AdminUser\\Controller' => 'HalJson',
             'ZfeggAdmin\\V1\\Rest\\AdminRole\\Controller' => 'HalJson',
+            'ZfeggAdmin\\V1\\Rpc\\App\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'ZfeggAdmin\\V1\\Rest\\Resources\\Controller' => array(
@@ -298,6 +310,11 @@ return array(
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
+            'ZfeggAdmin\\V1\\Rpc\\App\\Controller' => array(
+                0 => 'text/html',
+                1 => 'application/xhtml+xml',
+                2 => 'application/xml',
+            ),
         ),
         'content_type_whitelist' => array(
             'ZfeggAdmin\\V1\\Rest\\Resources\\Controller' => array(
@@ -330,6 +347,10 @@ return array(
                 1 => 'application/json',
             ),
             'ZfeggAdmin\\V1\\Rest\\AdminRole\\Controller' => array(
+                0 => 'application/vnd.zfegg-admin.v1+json',
+                1 => 'application/json',
+            ),
+            'ZfeggAdmin\\V1\\Rpc\\App\\Controller' => array(
                 0 => 'application/vnd.zfegg-admin.v1+json',
                 1 => 'application/json',
             ),
@@ -887,6 +908,33 @@ return array(
                     ),
                 ),
             ),
+            'ZfeggAdmin\\V1\\Rpc\\App\\Controller' => array(
+                'actions' => array(
+                    'App' => array(
+                        'GET' => false,
+                        'POST' => false,
+                        'PUT' => false,
+                        'PATCH' => false,
+                        'DELETE' => false,
+                    ),
+                ),
+            ),
+            'ZfeggAdmin\\V1\\Rest\\AdminUser\\Controller' => array(
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+                'entity' => array(
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -907,19 +955,25 @@ return array(
             ),
             'route_name' => 'zfegg-admin.rpc.profile',
         ),
+        'ZfeggAdmin\\V1\\Rpc\\App\\Controller' => array(
+            'service_name' => 'App',
+            'http_methods' => array(
+                0 => 'GET',
+            ),
+            'route_name' => 'zfegg-admin.rpc.app',
+        ),
     ),
     'zf-oauth2' => array(
         'user_id' => 'user_id',
-        'options' => array(
-            'auth_code_lifetime' => '1800',
-        ),
     ),
     'controllers' => array(
-        'factories' => array(
-            'ZfeggAdmin\\V1\\Rpc\\Profile\\Controller' => 'ZfeggAdmin\\V1\\Rpc\\Profile\\ProfileControllerFactory',
+        'invokables' => array(
+            'ZfeggAdmin\\V1\\Rpc\\App\\Controller' => 'ZfeggAdmin\\V1\\Rpc\\App\\AppController',
+            'ZfeggAdmin\\V1\\Rpc\\Profile\\Controller' => 'ZfeggAdmin\\V1\\Rpc\\Profile\\ProfileController',
         ),
     ),
     'zfegg-admin' => array(
+        'ui_modules' => array(),
         'menus' => array(
             0 => array(
                 'text' => '系统',

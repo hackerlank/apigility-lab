@@ -1,14 +1,12 @@
 <?php
 
-namespace ZfeggAuth\Authentication;
+namespace Zfegg\Admin\MvcAuth\Authentication;
 
 
 use Zend\Authentication\Adapter\DbTable\AbstractAdapter;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\Db\Sql;
 use Zend\Http\Response;
-use Zend\Permissions\Rbac\Role;
-use ZF\MvcAuth\Identity\AuthenticatedIdentity;
 use ZF\OAuth2\Adapter\BcryptTrait;
 
 class DbAuthenticationAdapter extends AbstractAdapter

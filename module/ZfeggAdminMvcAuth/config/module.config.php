@@ -2,12 +2,12 @@
 return array(
     'router'             => array(
         'routes' => array(
-            'zfegg-auth.controller.login' => array(
+            'zfegg-mvc-auth.controller.login' => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'    => '/login',
                     'defaults' => array(
-                        'controller' => 'ZfeggAuth\Controller\Login',
+                        'controller' => 'Zfegg\Admin\MvcAuth\Auth\Controller',
                         'action'     => 'login',
                     ),
                 ),
@@ -23,8 +23,8 @@ return array(
         ),
         'factories' => array(
             'ZF\MvcAuth\Authorization\AclAuthorization' => 'ZF\MvcAuth\Factory\AclAuthorizationFactory',
-            'ZfeggAuth\AuthenticationAdapter' => 'ZfeggAuth\Factory\AuthenticationAdapterFactory',
-            'ZfeggAuth\Acl' => 'ZfeggAuth\Factory\AclAuthorizationFactory',
+            'Zfegg\Admin\MvcAuth\AuthenticationAdapter' => 'Zfegg\Admin\MvcAuth\Factory\AuthenticationAdapterFactory',
+            'Zfegg\Admin\MvcAuth\Acl' => 'Zfegg\Admin\MvcAuth\Factory\AclAuthorizationFactory',
 
             'ZF\MvcAuth\Authorization\DefaultResourceResolverListener' => 'ZF\MvcAuth\Factory\DefaultResourceResolverListenerFactory',
         ),
@@ -34,8 +34,8 @@ return array(
     ),
 
     'controllers' => array(
-        'factories' => array(
-            'ZfeggAuth\Controller\Login' => 'ZfeggAuth\Controller\LoginControllerFactory',
+        'invokables' => array(
+            'Zfegg\Admin\MvcAuth\Auth\Controller' => 'Zfegg\Admin\MvcAuth\Controller\AuthController',
         ),
     ),
 

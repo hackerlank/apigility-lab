@@ -19,7 +19,9 @@ return array(
     ),
     'zf-mvc-auth' => array(
         'authentication' => array(
-            'map' => array(),
+            'map' => array(
+                'ZfeggAdmin\\V1' => 'users',
+            ),
         ),
     ),
 );

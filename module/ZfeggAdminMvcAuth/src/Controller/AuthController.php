@@ -1,5 +1,5 @@
 <?php
-namespace ZfeggAuth\Controller;
+namespace Zfegg\Admin\MvcAuth\Controller;
 
 use Zend\Form\Element\Captcha;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -13,13 +13,17 @@ use ZF\ApiProblem\ApiProblemResponse;
  *
  * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
-class LoginController extends AbstractActionController
+class AuthController extends AbstractActionController
 {
     public function loginAction()
     {
+        $view = new ViewModel();
+        $view->setTemplate('zfegg-admin-ui-login');
+        $view->setTerminal(true);
+        return $view;
         $sl = $this->getServiceLocator();
         /** @var \Zend\Form\Form $form */
-        $form = $sl->get('FormElementManager')->get('ZfeggAuth\Login');
+        $form = $sl->get('FormElementManager')->get('Zfegg\Admin\MvcAuth\Login');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($_POST);
@@ -34,10 +38,10 @@ class LoginController extends AbstractActionController
 
             /**
              * @var \Zend\Authentication\AuthenticationService $auth
-             * @var \ZfeggAuth\Authentication\DbAuthenticationAdapter $authAdapter
+             * @var \Zfegg\Admin\MvcAuth\Authentication\DbAuthenticationAdapter $authAdapter
              */
             $auth          = $sl->get('Zend\Authentication\AuthenticationService');
-            $authAdapter   = $sl->get('ZfeggAuth\AuthenticationAdapter');
+            $authAdapter   = $sl->get('Zfegg\Admin\MvcAuth\AuthenticationAdapter');
             $authAdapter->setIdentity($form->get('username')->getValue());
             $authAdapter->setCredential($form->get('password')->getValue());
 
