@@ -38,4 +38,12 @@ return array(
             ),
         ),
     ),
+
+    'zfegg-admin-mvc-auth' => array(
+        'role_whitelists' => array(
+            '6' => array(
+                '*' => array(),
+            ),
+        ),
+    ),
 );

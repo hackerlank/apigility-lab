@@ -7,7 +7,8 @@ class UserRolesResourceFactory
 {
     public function __invoke($services)
     {
-        $table = new TableGateway('admin_assign_user_role', $services->get('ZfeggAdmin'));
+        $tableName = $services->get('config')['zfegg-admin']['tables']['user_roles'];
+        $table = new TableGateway($tableName, $services->get('ZfeggAdmin'));
         return new UserRolesResource($table);
     }
 }

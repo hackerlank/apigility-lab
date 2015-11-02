@@ -47,6 +47,12 @@
     "autoload": {
         "psr-0": {
             "ZfeggAdminTest\\": "module/ZfeggAdmin/tests/"
-        }
+        },
+        "psr-4": {
+            "Zfegg\\Admin\\MvcAuth\\": "module/ZfeggAdminMvcAuth/src/"
+        },
+        "classmap": [
+            "public/zfegg-admin-ui-kendo/Module.php"
+        ]
     }
 }

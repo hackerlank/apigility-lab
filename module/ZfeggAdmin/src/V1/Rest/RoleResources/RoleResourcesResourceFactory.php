@@ -8,9 +8,10 @@ class RoleResourcesResourceFactory
 {
     public function __invoke($services)
     {
+        $tableName          = $services->get('config')['zfegg-admin']['tables']['role_resources'];
         $resultSetPrototype = new ResultSet(ResultSet::TYPE_ARRAYOBJECT, new RoleResourcesEntity());
         $table              = new TableGateway(
-            'admin_assign_role_resource',
+            $tableName,
             $services->get('ZfeggAdmin'),
             null,
             $resultSetPrototype

@@ -963,9 +963,6 @@ return array(
             'route_name' => 'zfegg-admin.rpc.app',
         ),
     ),
-    'zf-oauth2' => array(
-        'user_id' => 'user_id',
-    ),
     'controllers' => array(
         'invokables' => array(
             'ZfeggAdmin\\V1\\Rpc\\App\\Controller' => 'ZfeggAdmin\\V1\\Rpc\\App\\AppController',
@@ -1036,6 +1033,10 @@ return array(
                     ),
                 ),
             ),
+        ),
+        'tables' => array(
+            'user_roles' => 'admin_assign_user_role',
+            'role_resources' => 'admin_assign_role_resource',
         ),
     ),
 );

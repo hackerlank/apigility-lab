@@ -7,7 +7,7 @@ include __DIR__ . '/../../../vendor/autoload.php';
 
 $test = new Test;
 
-$test->testPostOauthPassword();
+$test->testGetUsers();
 
 class Test
 {
@@ -70,11 +70,11 @@ EOT
         $response = ClientStatic::get('http://zfeggapi.local/users', [],
             [
                 'Accept' => 'application/hal+json',
-                'Authorization' => 'Bearer 5311195fbffa91a764c4443810e51644e58654bd',
+                'Authorization' => 'Bearer 8642e0f20e1876a9a6d853ec843c5531bd195344',
             ]
         );
 
-        echo Json::prettyPrint($response->getBody());
+        echo ($response->getBody());
     }
 
     public function testPostUsers()

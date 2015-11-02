@@ -1,149 +1,20 @@
 <?php
 return array(
-    'router'             => array(
-        'routes' => array(
-            'zfegg-mvc-auth.controller.login' => array(
-                'type'    => 'Segment',
-                'options' => array(
-                    'route'    => '/login',
-                    'defaults' => array(
-                        'controller' => 'Zfegg\Admin\MvcAuth\Auth\Controller',
-                        'action'     => 'login',
-                    ),
-                ),
-            ),
-        ),
-    ),
     'service_manager'    => array(
-        'aliases'   => array(
-            'authentication' => 'Zend\Authentication\AuthenticationService',
-            'ZfeggAuth\RoleResourceTable' => 'ZfeggAdmin\V1\Rest\AdminRole\AdminRoleResource\Table',
-            'ZfeggAuth\UserRolesResource' => 'ZfeggAdmin\\V1\\Rest\\UserRoles\\UserRolesResource',
-            'ZfeggAuth\RoleResourcesResource' => 'ZfeggAdmin\\V1\\Rest\\RoleResources\\RoleResourcesResource',
-        ),
-        'factories' => array(
-            'ZF\MvcAuth\Authorization\AclAuthorization' => 'ZF\MvcAuth\Factory\AclAuthorizationFactory',
-            'Zfegg\Admin\MvcAuth\AuthenticationAdapter' => 'Zfegg\Admin\MvcAuth\Factory\AuthenticationAdapterFactory',
-            'Zfegg\Admin\MvcAuth\Acl' => 'Zfegg\Admin\MvcAuth\Factory\AclAuthorizationFactory',
-
-            'ZF\MvcAuth\Authorization\DefaultResourceResolverListener' => 'ZF\MvcAuth\Factory\DefaultResourceResolverListenerFactory',
-        ),
         'invokables' => array(
-            'ZfeggAuth\AuthListener' => 'ZfeggAuth\AuthListener',
+            'Zfegg\Admin\MvcAuth\Authorization\ResourceAssertion' => 'Zfegg\Admin\MvcAuth\Authorization\ResourceAssertion',
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'Zfegg\Admin\MvcAuth\Auth\Controller' => 'Zfegg\Admin\MvcAuth\Controller\AuthController',
-        ),
-    ),
-
-//    'form_elements' => array(
-//        'abstract_factories' => array(
-//            'Zend\Form\FormAbstractServiceFactory',
-//        ),
-//    ),
-
-    'input_filter_specs' => array(
-        'ZfeggAuth\Login' => array(
-            array(
-                'required'   => true,
-                'validators' => array(
-                    0 => array(
-                        'name'    => 'Zend\\I18n\\Validator\\Alnum',
-                        'options' => array(),
-                    ),
-                ),
-                'filters'    => array(
-                    0 => array(
-                        'name'    => 'Zend\\Filter\\StringTrim',
-                        'options' => array(),
-                    ),
-                    1 => array(
-                        'name'    => 'Zend\\Filter\\StringToLower',
-                        'options' => array(),
-                    ),
-                ),
-                'name'       => 'username',
-            ),
-            array(
-                'required'   => true,
-                'validators' => array(),
-                'filters'    => array(),
-                'name'       => 'password',
-            ),
-        ),
-    ),
-
-    'forms' => array(
-        'ZfeggAuth\Login' => array(
-//            'hydrator' => 'ObjectProperty',
-            'type'     => 'Zend\Form\Form',
-            'elements' => array(
-                array(
-                    'spec' => array(
-                        'type' => 'Zend\Form\Element\Text',
-                        'name' => 'username',
-                        'options' => array(
-                            'label' => 'Username',
-                        ),
-                    ),
-                ),
-                array(
-                    'spec' => array(
-                        'type' => 'Zend\Form\Element\Password',
-                        'name' => 'password',
-                        'options' => array(
-                            'label' => 'Password',
-                        ),
-                    ),
-                ),
-            ),
-            'input_filter' => array(
-                array(
-                    'required'   => true,
-                    'validators' => array(
-                        array(
-                            'name'    => 'Zend\\I18n\\Validator\\Alnum',
-                            'options' => array(),
-                        ),
-                    ),
-                    'filters'    => array(
-                        array(
-                            'name'    => 'Zend\\Filter\\StringTrim',
-                            'options' => array(),
-                        ),
-                        array(
-                            'name'    => 'Zend\\Filter\\StringToLower',
-                            'options' => array(),
-                        ),
-                    ),
-                    'name'       => 'username',
-                ),
-                array(
-                    'required'   => true,
-                    'validators' => array(),
-                    'filters'    => array(),
-                    'name'       => 'password',
-                ),
-            ),
-        ),
-    ),
-
-    'view_manager' => array(
-        'template_path_stack' => array(
-            __DIR__ . '/../view',
-        ),
-    ),
-
-    'zfegg-auth' => array(
-        'authentication' => array(
-            'adapter' => 'ZfeggOauth',
-            'table' => 'oauth_users',
-            'identity_column' => 'username',
-            'credential_column' => 'password',
-        ),
+    'zf-oauth2' => array(
         'user_id' => 'user_id',
+    ),
+
+    'zfegg-admin-mvc-auth' => array(
+        'role_whitelists' => array(
+            '*' => array(
+                'ZfeggAdmin\\V1\\Rpc\\Profile\\Controller::*' => array(),
+            ),
+        ),
     ),
 );
